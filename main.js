@@ -8,12 +8,21 @@ let highscore = document.querySelector(".highscore span");
 let userInput;
 
 setGuessNumber(Math.floor(Math.random() * 21));
-
 getHighscore() ? setHighscore(getHighscore()) : setHighscore(0);
 highscore.textContent = getHighscore();
+guessInput.focus();
 
-console.log(getGuessNumber());
-checkGuessBtn.addEventListener("click", (_) => {
+checkGuessBtn.addEventListener("click", handleGuess);
+
+guessInput.addEventListener("keydown", (e) =>
+  e.key === "Enter" ? handleGuess() : ""
+);
+
+againBtn.addEventListener("click", (_) =>
+  playAgain(checkGuessBtn, againBtn, guessText, guessInput, score)
+);
+
+function handleGuess() {
   userInput = parseInt(guessInput.value);
   // if user input is a number
   if (!isNaN(userInput)) {
@@ -22,81 +31,17 @@ checkGuessBtn.addEventListener("click", (_) => {
       checkGuess(userInput, getGuessNumber()),
       highscore
     );
-    checkWinOrLost(score, checkGuessBtn, againBtn, guessText, result);
+    checkWinOrLost(
+      score,
+      checkGuessBtn,
+      againBtn,
+      guessText,
+      result,
+      guessInput
+    );
   }
   // if user input is not a number
   else {
     guessText.textContent = "Please Enter a Number";
   }
-});
-
-againBtn.addEventListener("click", (_) => {
-  playAgain(checkGuessBtn, againBtn, guessText, guessInput, score);
-});
-
-function playAgain(checkGuessBtn, againBtn, guessText, guessInput, score) {
-  document.body.classList.remove("bg-[#ff5f5f]", "bg-[#63be6c]");
-  document.body.classList.add("bg-[#222222]");
-  checkGuessBtn.classList.remove("hidden");
-  againBtn.classList.add("hidden");
-  guessText.textContent = "start guessing . . .";
-  guessInput.value = "";
-  score.textContent = "10";
-  setGuessNumber(Math.floor(Math.random() * 21));
-}
-
-function checkWinOrLost(score, checkGuessBtn, againBtn, guessText, result) {
-  // if lost
-  if (Number(score.textContent) === 0 && !result) {
-    checkGuessBtn.classList.add("hidden");
-    againBtn.classList.remove("hidden");
-    guessText.textContent = "You have used all of your tries";
-    document.body.classList.replace("bg-[#222222]", "bg-[#ff5f5f]");
-    // if won
-  } else if (Number(score.textContent) !== 0 && result) {
-    checkGuessBtn.classList.add("hidden");
-    againBtn.classList.remove("hidden");
-    guessText.textContent = "you did it 👏";
-    document.body.classList.replace("bg-[#222222]", "bg-[#63be6c]");
-  }
-}
-
-function checkGuess(userInput, currentGuessNumber) {
-  if (userInput < currentGuessNumber) {
-    guessText.textContent = "📉 Too low";
-    return false;
-  } else if (userInput > currentGuessNumber) {
-    guessText.textContent = "📈 Too high";
-    return false;
-  }
-  return true;
-}
-
-function updateScores(score, found, highscore) {
-  if (found) {
-    if (getHighscore() < Number(score.textContent)) {
-      setHighscore(score.textContent);
-      highscore.textContent = getHighscore();
-    }
-  } else {
-    if (Number(score.textContent) !== 0)
-      score.textContent = Number(score.textContent) - 1;
-  }
-  return found;
-}
-
-function setGuessNumber(value) {
-  localStorage.setItem("guessnumber", value);
-}
-
-function getGuessNumber() {
-  return JSON.parse(localStorage.getItem("guessnumber"));
-}
-
-function setHighscore(value) {
-  localStorage.setItem("highscore", value);
-}
-
-function getHighscore() {
-  return JSON.parse(localStorage.getItem("highscore"));
 }
