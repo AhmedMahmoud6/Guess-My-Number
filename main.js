@@ -7,16 +7,19 @@ let score = document.querySelector(".score span");
 let highscore = document.querySelector(".highscore span");
 let userInput;
 
-let currentGuessNumber = Math.floor(Math.random() * 21);
+setGuessNumber(Math.floor(Math.random() * 21));
 
-console.log(currentGuessNumber);
+getHighscore() ? setHighscore(getHighscore()) : setHighscore(0);
+highscore.textContent = getHighscore();
+
+console.log(getGuessNumber());
 checkGuessBtn.addEventListener("click", (_) => {
   userInput = parseInt(guessInput.value);
   // if user input is a number
   if (!isNaN(userInput)) {
     let result = updateScores(
       score,
-      checkGuess(userInput, currentGuessNumber),
+      checkGuess(userInput, getGuessNumber()),
       highscore
     );
     checkWinOrLost(score, checkGuessBtn, againBtn, guessText, result);
@@ -28,10 +31,10 @@ checkGuessBtn.addEventListener("click", (_) => {
 });
 
 againBtn.addEventListener("click", (_) => {
-  playAgain();
+  playAgain(checkGuessBtn, againBtn, guessText, guessInput, score);
 });
 
-function playAgain() {
+function playAgain(checkGuessBtn, againBtn, guessText, guessInput, score) {
   document.body.classList.remove("bg-[#ff5f5f]", "bg-[#63be6c]");
   document.body.classList.add("bg-[#222222]");
   checkGuessBtn.classList.remove("hidden");
@@ -39,7 +42,7 @@ function playAgain() {
   guessText.textContent = "start guessing . . .";
   guessInput.value = "";
   score.textContent = "10";
-  currentGuessNumber = Math.floor(Math.random() * 21);
+  setGuessNumber(Math.floor(Math.random() * 21));
 }
 
 function checkWinOrLost(score, checkGuessBtn, againBtn, guessText, result) {
@@ -71,11 +74,29 @@ function checkGuess(userInput, currentGuessNumber) {
 
 function updateScores(score, found, highscore) {
   if (found) {
-    if (Number(highscore.textContent) < Number(score.textContent))
-      highscore.textContent = score.textContent;
+    if (getHighscore() < Number(score.textContent)) {
+      setHighscore(score.textContent);
+      highscore.textContent = getHighscore();
+    }
   } else {
     if (Number(score.textContent) !== 0)
       score.textContent = Number(score.textContent) - 1;
   }
   return found;
+}
+
+function setGuessNumber(value) {
+  localStorage.setItem("guessnumber", value);
+}
+
+function getGuessNumber() {
+  return JSON.parse(localStorage.getItem("guessnumber"));
+}
+
+function setHighscore(value) {
+  localStorage.setItem("highscore", value);
+}
+
+function getHighscore() {
+  return JSON.parse(localStorage.getItem("highscore"));
 }
