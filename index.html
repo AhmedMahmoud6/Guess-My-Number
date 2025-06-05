@@ -31,12 +31,29 @@
         </div>
       </div>
 
-      <div class="guess-input flex flex-col gap-4">
+      <div class="guess-input-container flex flex-col items-center gap-6">
+        <h1 class="guess-text text-white">start guessing . . .</h1>
         <input
           type="number"
-          class="text-white text-center outline-2 outline-[#eeeeee] w-50 h-20 focus:rounded-xl transition-all duration-500"
+          class="guess-input text-white text-center outline-2 outline-[#eeeeee] w-50 h-20 focus:rounded-xl transition-all duration-500"
         />
-        <button class="bg-[#eeeeee] p-5 text-xl">Check</button>
+        <button
+          class="check-guess bg-[#eeeeee] p-5 text-xl hover:bg-[#cccccc] active:bg-[#747474] cursor-pointer"
+        >
+          Check
+        </button>
+        <button
+          class="again bg-[#eeeeee] p-5 text-xl hover:bg-[#cccccc] active:bg-[#747474] cursor-pointer hidden"
+        >
+          Again!
+        </button>
+      </div>
+
+      <div class="guess-score flex gap-8 mt-10">
+        <h1 class="score text-white text-xl">💯 score: <span>20</span></h1>
+        <h1 class="highscore text-white text-xl">
+          🏆 highscore: <span>0</span>
+        </h1>
       </div>
     </div>
   </body>
