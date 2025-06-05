@@ -1,4 +1,11 @@
-function playAgain(checkGuessBtn, againBtn, guessText, guessInput, score) {
+function playAgain(
+  checkGuessBtn,
+  againBtn,
+  guessText,
+  guessInput,
+  score,
+  guess
+) {
   document.body.classList.remove("bg-[#ff5f5f]", "bg-[#63be6c]");
   document.body.classList.add("bg-[#222222]");
   checkGuessBtn.classList.remove("hidden");
@@ -7,6 +14,7 @@ function playAgain(checkGuessBtn, againBtn, guessText, guessInput, score) {
   guessInput.value = "";
   guessInput.disabled = false;
   guessInput.focus();
+  guess.textContent = "??";
   score.textContent = "10";
   setGuessNumber(Math.floor(Math.random() * 21));
 }
@@ -17,10 +25,12 @@ function checkWinOrLost(
   againBtn,
   guessText,
   result,
-  guessInput
+  guessInput,
+  guess
 ) {
   // if lost
   if (Number(score.textContent) === 0 && !result) {
+    guess.textContent = getGuessNumber();
     checkGuessBtn.classList.add("hidden");
     againBtn.classList.remove("hidden");
     guessText.textContent = "You have used all of your tries";
@@ -28,6 +38,7 @@ function checkWinOrLost(
     guessInput.disabled = true;
     // if won
   } else if (Number(score.textContent) !== 0 && result) {
+    guess.textContent = getGuessNumber();
     checkGuessBtn.classList.add("hidden");
     againBtn.classList.remove("hidden");
     guessText.textContent = "you did it 👏";

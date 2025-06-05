@@ -19,7 +19,7 @@ guessInput.addEventListener("keydown", (e) =>
 );
 
 againBtn.addEventListener("click", (_) =>
-  playAgain(checkGuessBtn, againBtn, guessText, guessInput, score)
+  playAgain(checkGuessBtn, againBtn, guessText, guessInput, score, guess)
 );
 
 function handleGuess() {
@@ -37,7 +37,8 @@ function handleGuess() {
       againBtn,
       guessText,
       result,
-      guessInput
+      guessInput,
+      guess
     );
   }
   // if user input is not a number
